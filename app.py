@@ -3,7 +3,6 @@
 import numpy as np
 
 import dash
-import dash_auth
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table
@@ -356,20 +355,11 @@ tab2_fig_betas = np.array([[ 0,  0],
 tab2_fig1, tab2_fig2 = velocity_beta_plots(np.deg2rad(60), np.deg2rad(tab2_fig_betas), params, 1)
 tab3_fig = velocity_field_plot([0,0,0], params)
 
-VALID_USERNAME_PASSWORD_PAIRS = [
-    ['sergey', 'sergey']
-]
-
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 server = app.server
-
-auth = dash_auth.BasicAuth(
-    app,
-    VALID_USERNAME_PASSWORD_PAIRS
-)
 
 tab1_content = [
     html.H2(u'СДИ в центре фокальной плоскости в зависимости от аномалии θ'),

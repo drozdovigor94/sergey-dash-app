@@ -1,0 +1,15 @@
+name: sergey_dash_app #Environment name
+channels:
+  - conda-forge
+dependencies:
+  - python=3.7.1
+  - pip:
+    - dash
+    - dash-table
+    - dash-renderer
+    - dash-core-components
+    - dash-html-components
+    - plotly
+    - dash-auth
+    - numpy
+    - gunicorn # for app deployment

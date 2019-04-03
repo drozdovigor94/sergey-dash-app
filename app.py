@@ -15,17 +15,19 @@ import plotly.figure_factory as ff
 
 N_x_points = 200
 
+# Функция для расчета компонент скорости V_x и V_y в точке (x,y) в зависимости от углов θ, β и параметров задачи
+
 def V_fun(theta, x, y, beta, params):
-    r_0 = params["r_0"]  # Earth radius
-    h_0 = params["h_0"]  # Orbit height
-    a = r_0 + h_0  # Orbit semi-major axis
-    mu = params["mu"]  # Gravitational constant
+    r_0 = params["r_0"]  # радиус Земли
+    h_0 = params["h_0"]  # высота орбиты
+    a = r_0 + h_0  # большая полуось орбиты
+    mu = params["mu"]  # гравитационная постоянная
     n = np.sqrt(mu / a**3)
-    omega =  params["omega"]  # Earth rotation angular velocity
-    e = params["e"]  # Orbit eccentricity
-    i = np.deg2rad(params["i"])  # Orbit axial tilt
-    g = params["g"]  # Perigee latitude
-    d = params["d"]  # Focal length
+    omega =  params["omega"]  # угловая скорость вращения Земли
+    e = params["e"]  # эксцентриситет орбиты
+    i = np.deg2rad(params["i"])  # наклонение орбиты
+    g = params["g"]  # долгота перигея
+    d = params["d"]  # фокусное расстояние
 
     gamma_11 = np.cos(beta[1-1]) * np.cos(beta[3-1]) - np.sin(beta[1-1]) * np.cos(beta[2-1]) * np.sin(beta[3-1])
     gamma_21 = np.sin(beta[1-1]) * np.cos(beta[3-1]) + np.cos(beta[1-1]) * np.cos(beta[2-1]) * np.sin(beta[3-1])
@@ -71,6 +73,8 @@ def V_fun(theta, x, y, beta, params):
 
     return np.array([V_1r, V_2r])
 
+# Вспомогательная функция для определения масштаба графика для наглядности изображения скоростей
+
 def optimal_range(V_x_values, V_y_values):
     V_x_range = V_x_values.max() - V_x_values.min()
     V_y_range = V_y_values.max() - V_y_values.min()
@@ -82,8 +86,12 @@ def optimal_range(V_x_values, V_y_values):
 
     return V_x_yrange, V_y_yrange
 
+# Функция для построения графиков СДИ в центре в зависимости от аномалии θ
 
 def velocity_anomaly_plot(beta, params):
+
+	# Вычисление значений
+
     theta_values = np.linspace(0, 2*np.pi, N_x_points)
     V_fun_theta = lambda theta : V_fun(theta, 0, 0, beta, params)
     V_fun_theta_vectorized = np.vectorize(V_fun_theta, signature='(b)->(2,n)')
@@ -93,6 +101,8 @@ def velocity_anomaly_plot(beta, params):
     V_y_values = V_fun_values[1, :]
 
     V_x_yrange, V_y_yrange = optimal_range(V_x_values, V_y_values)
+
+    # Построение графика
 
     trace1 = go.Scatter(
         x = theta_values,
@@ -144,6 +154,8 @@ def velocity_anomaly_plot(beta, params):
         )
     return fig
 
+# Функция для заполнения таблицы результатов
+
 def result_table_data(beta_deg, params):
     beta = np.deg2rad(beta_deg)
     theta_values = np.linspace(0, 2*np.pi, N_x_points)
@@ -172,7 +184,12 @@ def result_table_data(beta_deg, params):
     ]
     return data
 
+# Функция для построения графиков СДИ в центре в зависимости от одного из углов β
+
 def velocity_beta_plots(theta, betas, params, beta_dep):
+
+    # Вычисление значений
+
     beta_dep_values = np.linspace(0, theta, N_x_points)
 
     V_funs_beta = {
@@ -188,6 +205,8 @@ def velocity_beta_plots(theta, betas, params, beta_dep):
     V_fun_values = V_fun_values * 1000
     V_x_values = V_fun_values[0,:,:]
     V_y_values = V_fun_values[1,:,:]
+
+    # Построение графика
 
     V_x_yrange, V_y_yrange = optimal_range(V_x_values, V_y_values)
 
@@ -244,6 +263,8 @@ def velocity_beta_plots(theta, betas, params, beta_dep):
     return fig1, fig2
 
 
+# Функция для вычисления поля скоростей в зависимости от углов θ, β и параметров задачи в точках, задаваемых массивами x и y
+
 def velocity_field(theta, beta, x, y, params):
     V_x0, V_y0 = V_fun(theta, 0, 0, beta, params)
     V_x, V_y = V_fun(theta, x, y, beta, params)
@@ -259,13 +280,20 @@ def velocity_field(theta, beta, x, y, params):
     return V_x_diff, V_y_diff
 
 
+# Функция для построения поля скоростей
+
 def velocity_field_plot(beta, params):
+
+	# Вычисление значений
+
     thetas = np.linspace(0, 2 * np.pi, 50)
     x, y = np.meshgrid(np.arange(-60, 70, 10), np.arange(-40, 50, 10))
     x = x / 1000
     y = y / 1000
 
     fields = [velocity_field(theta, beta, x, y, params) for theta in thetas]
+
+    # Построение графика
 
     vector_lengths = [np.sqrt(f[0] ** 2 + f[1] ** 2) for f in fields]
     vector_lengths_array = np.dstack(vector_lengths)
@@ -322,14 +350,14 @@ def velocity_field_plot(beta, params):
     return main_fig
 
 params = {
-    'r_0': 6.378137 * 10**6,  # Earth radius
-    'h_0': 2.5 * 10**5,  # Orbit height
-    'mu': 3.985586 * 10**14,  # Gravitational constant
-    'omega': 7.292115 * 10**(-5),  # Earth rotation angular velocity
-    'e': 0.001,  # Orbit eccentricity
-    'i': 97,  # Orbit axial tilt
-    'g': 0,  # Perigee latitude
-    'd': 1.5  # Focal length
+    'r_0': 6.378137 * 10**6,
+    'h_0': 2.5 * 10**5,
+    'mu': 3.985586 * 10**14,
+    'omega': 7.292115 * 10**(-5),
+    'e': 0.001,
+    'i': 97,
+    'g': 0,
+    'd': 1.5
 }
 param_table_data = [
     {'name': u'Высота орбиты (м)', 'symbol': 'h_0', 'value': params['h_0']},
@@ -454,7 +482,10 @@ tab1_content = [
                         dcc.Graph(
                             id='tab1-velocity-anomaly-plot',
                             figure=tab1_fig
-                        )
+                        ),
+                        style={
+                        	'width': '95%'
+                        }
                     ),
                     html.Div(
                         dash_table.DataTable(

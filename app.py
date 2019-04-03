@@ -332,11 +332,11 @@ params = {
     'd': 1.5  # Focal length
 }
 param_table_data = [
-    {'name': u'Высота орбиты', 'symbol': 'h_0', 'value': params['h_0']},
+    {'name': u'Высота орбиты (м)', 'symbol': 'h_0', 'value': params['h_0']},
     {'name': u'Эксцентриситет орбиты', 'symbol': 'e', 'value': params['e']},
-    {'name': u'Наклонение орбиты', 'symbol': 'i', 'value': params['i']},
+    {'name': u'Наклонение орбиты (°)', 'symbol': 'i', 'value': params['i']},
     {'name': u'Долгота перигея', 'symbol': 'g', 'value': params['g']},
-    {'name': u'Фокусное расстояние', 'symbol': 'd', 'value': params['d']}
+    {'name': u'Фокусное расстояние (м)', 'symbol': 'd', 'value': params['d']}
 ]
 
 tab2_beta_table_data = [

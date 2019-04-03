@@ -471,7 +471,7 @@ tab1_content = [
                        'vertical-align': 'middle',
                        'float': 'left',
                        'padding-top': '5%',
-                       'width': '20vw',
+                       'width': '410px',
                        'margin-left': '20px'}
             ),
 
@@ -482,10 +482,7 @@ tab1_content = [
                         dcc.Graph(
                             id='tab1-velocity-anomaly-plot',
                             figure=tab1_fig
-                        ),
-                        style={
-                        	'width': '95%'
-                        }
+                        )
                     ),
                     html.Div(
                         dash_table.DataTable(
@@ -514,7 +511,7 @@ tab1_content = [
                     )
                 ],
                 style={'display': 'inline-block',
-                       'width': '70vw',
+                       #'width': '70vw',
                        'float': 'right',
                        'padding-right': '20px'}
             )

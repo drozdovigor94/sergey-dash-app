@@ -214,7 +214,7 @@ def velocity_beta_plots(theta, betas, params, beta_dep):
             size=20
         ),
         xaxis=dict(
-            title=u'β'+str(beta_dep)+u'°',
+            title=u'β'+str(beta_dep)+u' (рад)',
             range=[0, theta]
         ),
         yaxis=dict(
@@ -231,7 +231,7 @@ def velocity_beta_plots(theta, betas, params, beta_dep):
             size=20
         ),
         xaxis=dict(
-            title=u'β'+str(beta_dep)+u'°',
+            title=u'β'+str(beta_dep)+u' (рад)',
             range=[0, theta]
         ),
         yaxis=dict(
@@ -375,6 +375,7 @@ tab1_content = [
                                 [
                                     'β',
                                     html.Sub('1'),
+                                    u'°',
                                     html.Span(
                                         dcc.Input(
                                             id='tab1-beta-1-input',
@@ -390,6 +391,7 @@ tab1_content = [
                                 [
                                     'β',
                                     html.Sub('2'),
+                                    u'°',
                                     html.Span(
                                         dcc.Input(
                                             id='tab1-beta-2-input',
@@ -405,6 +407,7 @@ tab1_content = [
                                 [
                                     'β',
                                     html.Sub('3'),
+                                    u'°',
                                     html.Span(
                                         dcc.Input(
                                             id='tab1-beta-3-input',
@@ -458,9 +461,9 @@ tab1_content = [
                             id='tab1-result-table',
                             editable=True,
                             columns=[
-                                {'name': u'β1', 'id': 'beta_1'},
-                                {'name': u'β2', 'id': 'beta_2'},
-                                {'name': u'β3', 'id': 'beta_3'},
+                                {'name': u'β1°', 'id': 'beta_1'},
+                                {'name': u'β2°', 'id': 'beta_2'},
+                                {'name': u'β3°', 'id': 'beta_3'},
                                 {'name': 'V_1x(0)', 'id': 'v_1x'},
                                 {'name': 'V_1y(0)', 'id': 'v_1y'},
                                 {'name': 'Δ V_1x', 'id': 'delta_v_1x'},
@@ -498,7 +501,7 @@ tab2_content = [
                 [
                     html.Div(
                         [
-                            'θ',
+                            'θ°',
                             html.Span(
                                 dcc.Input(
                                     id='tab2-theta-input',
@@ -531,8 +534,8 @@ tab2_content = [
                             editable=True,
                             columns=[
                                 {'name': u'Случай #', 'id': 'case'},
-                                {'name': u'β2', 'id': 'beta_1st', 'type': 'numeric'},
-                                {'name': u'β3', 'id': 'beta_2nd', 'type': 'numeric'}
+                                {'name': u'β2°', 'id': 'beta_1st', 'type': 'numeric'},
+                                {'name': u'β3°', 'id': 'beta_2nd', 'type': 'numeric'}
                             ],
                             data=tab2_beta_table_data,
                             style_cell={'fontSize': '17'},
@@ -626,6 +629,7 @@ tab3_content = [
                                 [
                                     'β',
                                     html.Sub('1'),
+                                    u'°',
                                     html.Span(
                                         dcc.Input(
                                             id='tab3-beta-1-input',
@@ -641,6 +645,7 @@ tab3_content = [
                                 [
                                     'β',
                                     html.Sub('2'),
+                                    u'°',
                                     html.Span(
                                         dcc.Input(
                                             id='tab3-beta-2-input',
@@ -656,6 +661,7 @@ tab3_content = [
                                 [
                                     'β',
                                     html.Sub('3'),
+                                    u'°',
                                     html.Span(
                                         dcc.Input(
                                             id='tab3-beta-3-input',
@@ -832,14 +838,14 @@ def update_result_table(nb1, nb2, nb3, rows, columns, input1, input2, input3):
 def update_beta_table_columns(value):
     column_variants = {
         '1': [{'name': u'Случай #', 'id': 'case'},
-              {'name': u'β2', 'id': 'beta_1st', 'type': 'numeric'},
-              {'name': u'β3', 'id': 'beta_2nd', 'type': 'numeric'}],
+              {'name': u'β2°', 'id': 'beta_1st', 'type': 'numeric'},
+              {'name': u'β3°', 'id': 'beta_2nd', 'type': 'numeric'}],
         '2': [{'name': u'Случай #', 'id': 'case'},
-              {'name': u'β1', 'id': 'beta_1st', 'type': 'numeric'},
-              {'name': u'β3', 'id': 'beta_2nd', 'type': 'numeric'}],
+              {'name': u'β1°', 'id': 'beta_1st', 'type': 'numeric'},
+              {'name': u'β3°', 'id': 'beta_2nd', 'type': 'numeric'}],
         '3': [{'name': u'Случай #', 'id': 'case'},
-              {'name': u'β1', 'id': 'beta_1st', 'type': 'numeric'},
-              {'name': u'β2', 'id': 'beta_2nd', 'type': 'numeric'}]
+              {'name': u'β1°', 'id': 'beta_1st', 'type': 'numeric'},
+              {'name': u'β2°', 'id': 'beta_2nd', 'type': 'numeric'}]
     }
     return column_variants[str(value)]
 

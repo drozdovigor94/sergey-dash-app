@@ -195,14 +195,14 @@ def velocity_beta_plots(theta, betas, params, beta_dep):
         x=beta_dep_values,
         y=V_x_values[:,i],
         mode='lines',
-        name='Случай '+str(i)
+        name='Случай '+str(i+1)
     ) for i in range(4)]
 
     traces_V_y = [go.Scatter(
         x=beta_dep_values,
         y=V_y_values[:,i],
         mode='lines',
-        name='Случай '+str(i)
+        name='Случай '+str(i+1)
     ) for i in range(4)]
 
     layout1 = dict(

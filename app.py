@@ -90,7 +90,7 @@ def optimal_range(V_x_values, V_y_values):
 
 def velocity_anomaly_plot(beta, params):
 
-	# Вычисление значений
+    # Вычисление значений
 
     theta_values = np.linspace(0, 2*np.pi, N_x_points)
     V_fun_theta = lambda theta : V_fun(theta, 0, 0, beta, params)
@@ -240,6 +240,7 @@ def velocity_beta_plots(theta, betas, params, beta_dep):
             title="мм/сек",
             range=V_x_yrange
         ),
+        # showlegend=False
     )
     layout2 = dict(
         width=650,
@@ -467,8 +468,7 @@ tab1_content = [
                         style={'padding-top': '20px'},
                     )
                 ],
-                style={'display': 'inline-block',
-                       'vertical-align': 'middle',
+                style={'vertical-align': 'middle',
                        'float': 'left',
                        'padding-top': '5%',
                        'width': '410px',
@@ -510,13 +510,19 @@ tab1_content = [
                         },
                     )
                 ],
-                style={'display': 'inline-block',
-                       #'width': '70vw',
-                       'float': 'right',
-                       'padding-right': '20px'}
+                style={
+                    'width': 'auto',
+                    'overflow': 'hidden',
+                    'padding-right': '20px',
+                    'padding-left': '30px'
+                }
             )
-        ]
-    )
+        ],
+        style={
+            'fontSize': 16
+        }
+    ),
+
 ]
 
 tab2_content = [
@@ -591,40 +597,41 @@ tab2_content = [
                         style={'padding-top': '20px'},
                     )
                 ],
-                style={'display': 'inline-block',
-                       'vertical-align': 'middle',
+                style={'vertical-align': 'middle',
                        'float': 'left',
                        'padding-top': '5%',
-                       'width': '20vw',
+                       'width': '410px',
                        'margin-left': '20px'}
             ),
 
             # Right div
             html.Div(
                 [
-                    html.Div(
-                        dcc.Graph(
-                            id='tab2-velocity-x-beta-plot',
-                            figure=tab2_fig1
-                        ),
-                        style={'display': 'inline-block',
-                               'width': '50%',
-                               }
+                    dcc.Graph(
+                        id='tab2-velocity-x-beta-plot',
+                        figure=tab2_fig1,
+                        style={
+                            #'float': 'left',
+                            'display': 'inline-block',
+                            'width': 'auto'
+                        }
                     ),
-                    html.Div(
-                        dcc.Graph(
-                            id='tab2-velocity-y-beta-plot',
-                            figure=tab2_fig2
-                        ),
-                        style={'display': 'inline-block',
-                               'width': '50%',
-                               }
-                    )
+                    dcc.Graph(
+                        id='tab2-velocity-y-beta-plot',
+                        figure=tab2_fig2,
+                        style={
+                            #'float': 'right',
+                            'display': 'inline-block',
+                            'width': 'auto'
+                        }
+                    ),
                 ],
-                style={'display': 'inline-block',
-                       'width': '70vw',
-                       'float': 'right',
-                       'padding-right': '20px'}
+                style={
+                    'width': 'auto',
+                    'overflow': 'hidden',
+                    'padding-right': '20px',
+                    'padding-left': '30px'
+                }
             )
         ]
     )
@@ -806,16 +813,31 @@ tab3_content = [
     )
 ]
 
+#tabs_content = [tab1_content, tab2_content, tab3_content]
+
 app.layout = html.Div(children=[
-    html.Div(
-        dcc.Tabs(id='tabs', children=[
-            dcc.Tab(label='СДИ в центре от θ', children=tab1_content),
-            dcc.Tab(label='СДИ в центре от β', children=tab2_content),
-            dcc.Tab(label='Поле скоростей', children=tab3_content)
-        ])
-    )
+    dcc.Tabs(id='tabs', value='tab1', children=[
+        dcc.Tab(label='СДИ в центре от θ', value='tab1'),
+        dcc.Tab(label='СДИ в центре от β', value='tab2'),
+        dcc.Tab(label='Поле скоростей', value='tab3')
+    ]),
+    html.Div(id='current-tab-content')
 ])
 
+app.config['suppress_callback_exceptions'] = True
+
+
+@app.callback(Output('current-tab-content', 'children'),
+              [Input('tabs', 'value')])
+def render_content(selected_tab):
+    if selected_tab == 'tab1':
+        return tab1_content
+    elif selected_tab == 'tab2':
+        return tab2_content
+    elif selected_tab == 'tab3':
+        return tab3_content
+    else:
+        return "Some error happened when selecting a tab"
 
 # region tab1-callbacks
 @app.callback(
